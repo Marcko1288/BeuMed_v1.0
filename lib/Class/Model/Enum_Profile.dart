@@ -4,7 +4,15 @@ enum SelectionProfile {
   admin,
   doc,
   paziente,
-  segretaria,
+  segretaria;
+
+  static SelectionProfile code(String s) => switch (s) {
+    'ADMIN' => admin,
+    'DOC' => doc,
+    "PAZ" => paziente,
+    "SEGR" => segretaria,
+    _ => paziente
+  };
 }
 
 extension ExtSelectionProfile on SelectionProfile {
@@ -27,23 +35,23 @@ extension ExtSelectionProfile on SelectionProfile {
     }
   }
 
-  static SelectionProfile code (String string) {
-    switch (string) {
-      case 'ADMIN':
-        return SelectionProfile.admin;
-
-      case 'DOT':
-        return SelectionProfile.doc;
-
-      case 'PAZ':
-        return SelectionProfile.paziente;
-
-      case 'SEGR':
-        return SelectionProfile.segretaria;
-
-      default:
-        return SelectionProfile.paziente;
-    }
-  }
+  // static SelectionProfile code (String string) {
+  //   switch (string) {
+  //     case 'ADMIN':
+  //       return SelectionProfile.admin;
+  //
+  //     case 'DOT':
+  //       return SelectionProfile.doc;
+  //
+  //     case 'PAZ':
+  //       return SelectionProfile.paziente;
+  //
+  //     case 'SEGR':
+  //       return SelectionProfile.segretaria;
+  //
+  //     default:
+  //       return SelectionProfile.paziente;
+  //   }
+  // }
 }
 
