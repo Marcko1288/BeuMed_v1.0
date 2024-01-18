@@ -59,8 +59,23 @@ class _TextFieldCustomState extends State<TextFieldCustom> {
             });
           },
           validator: FormBuilderValidators.compose([
-            for(var element in widget.listValidator) element.value
+            for (var element in widget.listValidator)  if (element != TypeValidator.cf || element != TypeValidator.piva) element.value,
+                (valid) {
+              for (var element in widget.listValidator) {
+                if (TypeValidator.cf == element.value &&
+                    element.value.toString().isCF) {
+                  return "Codice Fiscale non valido!";
+                } else if (TypeValidator.cf == element.value &&
+                    element.value.toString().isPIVA){
+                  return "Codice Fiscale non valido!";
+                }
+              }
+            },
           ]),
+
+          // validator: FormBuilderValidators.compose([
+          //   for(var element in widget.listValidator) element.value
+          // ]),
         ),
       ),
     );

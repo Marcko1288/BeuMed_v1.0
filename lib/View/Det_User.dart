@@ -90,6 +90,22 @@ class _Det_UserViewState extends State<Det_UserView> {
                         ]
                     ),
                   ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: TextFieldCustom(
+                        text: 'Codice Fiscale',
+                        modify_text: cf,
+                        enabled: widget.state == TypeState.read ? false : true,
+                        decoration: TypeDecoration.labolBord,
+                        onStringChanged: (String value) {
+                          cf = value;
+                        },
+                        listValidator: [
+                          TypeValidator.required,
+                          TypeValidator.cf,
+                        ]
+                    ),
+                  ),
                 ],
               ),
               // child: GridView.count(
