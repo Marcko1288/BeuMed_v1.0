@@ -1,3 +1,5 @@
+import 'package:beumed/Class/Model/Enum_Profile.dart';
+import 'package:beumed/Library/Extension_String.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,11 @@ class _Det_UserViewState extends State<Det_UserView> {
   late String piva = "";
   late String nome = "";
   late String cognome = "";
+  late SelectionProfile profilo = SelectionProfile.paziente;
+  late String indirizzo = "";
+  late String citta = "";
+  late String cap = "";
+  late String provincia = "";
 
   final _formKey = GlobalKey<FormState>();
 
@@ -64,135 +71,337 @@ class _Det_UserViewState extends State<Det_UserView> {
                 icon: Icon(Icons.delete_forever_outlined)),
         ],
       ),
-      body: Scrollbar(
-        child: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: size_width_padding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: SizedBox(
-                            width: size_width,
-                            child: Text(
-                              'Mail',
-                              style: TextStyle(
-                                  fontSize: size_text, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        TextFieldCustom(
-                            text: mail,
-                            modify_text: mail,
-                            keyboardType: TextInputType.emailAddress,
-                            enabled: widget.state == TypeState.read ? false : true,
-                            decoration: TypeDecoration.focusBord,
-                            onStringChanged: (String value) {
-                              mail = value;
-                            },
-                            listValidator: [
-                              TypeValidator.required,
-                              TypeValidator.email
-                            ]
-                        ),
-                      ]
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: SizedBox(
-                              width: size_width,
-                              child: Text(
-                                'Nome',
-                                style: TextStyle(
-                                    fontSize: size_text, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          TextFieldCustom(
-                              text: nome,
-                              modify_text: nome,
-                              enabled: widget.state == TypeState.read ? false : true,
-                              decoration: TypeDecoration.focusBord,
-                              onStringChanged: (String value) {
-                                nome = value;
-                              },
-                              listValidator: []
-                          ),
+      body: Form(
+          key: _formKey,
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: TextFieldCustom(
+                        text: 'Nome',
+                        modify_text: nome,
+                        enabled: widget.state == TypeState.read ? false : true,
+                        decoration: TypeDecoration.labolBord,
+                        onStringChanged: (String value) {
+                          nome = value;
+                        },
+                        listValidator: [
+                          TypeValidator.required,
                         ]
                     ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: SizedBox(
-                              width: size_width,
-                              child: Text(
-                                'Cognome',
-                                style: TextStyle(
-                                    fontSize: size_text, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          TextFieldCustom(
-                              text: cognome,
-                              modify_text: cognome,
-                              enabled: widget.state == TypeState.read ? false : true,
-                              decoration: TypeDecoration.focusBord,
-                              onStringChanged: (String value) {
-                                cognome = value;
-                              },
-                              listValidator: []
-                          ),
-                        ]
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: SizedBox(
-                              width: size_width,
-                              child: Text(
-                                'Codice Fiscale',
-                                style: TextStyle(
-                                    fontSize: size_text, fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                          TextFieldCustom(
-                              text: cf,
-                              modify_text: cf,
-                              enabled: widget.state == TypeState.read ? false : true,
-                              decoration: TypeDecoration.focusBord,
-                              onStringChanged: (String value) {
-                                cf = value;
-                              },
-                              listValidator: [
-                                //TypeValidator.cf,
-                              ]
-                          ),
-                        ]
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            )
-        ),
+              // child: GridView.count(
+              //   childAspectRatio: 5,
+              //     crossAxisCount: 2,
+              //   children: [
+              //
+              //
+              //     TextCampo('Nome'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('Nome'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: nome,
+              //           modify_text: nome,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             nome = value;
+              //           },
+              //           listValidator: [
+              //             TypeValidator.required,
+              //           ]
+              //         ),
+              //     ),
+              //     TextCampo('Cognome'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('Cognome'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: cognome,
+              //           modify_text: cognome,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             cognome = value;
+              //           },
+              //           listValidator: [
+              //             TypeValidator.required,
+              //           ]
+              //       ),
+              //     ),
+              //     TextCampo('Mail'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('Mail'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: mail,
+              //           modify_text: mail,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             mail = value;
+              //           },
+              //           listValidator: [
+              //             TypeValidator.required,
+              //             TypeValidator.email
+              //           ]
+              //       ),
+              //     ),
+              //     TextCampo('Codice Fiscale'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('Codice Fiscale'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: cf,
+              //           modify_text: cf,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             cf = value;
+              //           },
+              //           listValidator: []
+              //       ),
+              //     ),
+              //     if(profilo == SelectionProfile.doc)
+              //       TextCampo('Partita IVA'),
+              //       // Container(
+              //       //   alignment: Alignment.centerLeft,
+              //       //   child: Text('Partita IVA'),
+              //       // ),
+              //     if(profilo == SelectionProfile.doc)
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: piva,
+              //           modify_text: piva,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             piva = value;
+              //           },
+              //           listValidator: []
+              //       ),
+              //     ),
+              //
+              //     TextCampo('Indirizzo'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('Indirizzo'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: indirizzo,
+              //           modify_text: indirizzo,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             indirizzo = value;
+              //           },
+              //           listValidator: []
+              //       ),
+              //     ),
+              //     TextCampo('Cittá'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('Cittá'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: citta,
+              //           modify_text: citta,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             citta = value;
+              //           },
+              //           listValidator: []
+              //       ),
+              //     ),
+              //     TextCampo('CAP'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('CAP'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: cap,
+              //           modify_text: cap,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             cap = value;
+              //           },
+              //           listValidator: []
+              //       ),
+              //     ),
+              //     TextCampo('Provincia'),
+              //     // Container(
+              //     //   alignment: Alignment.centerLeft,
+              //     //   child: Text('Provincia'),
+              //     // ),
+              //     Container(
+              //       alignment: Alignment.center,
+              //       child: TextFieldCustom(
+              //           text: provincia,
+              //           modify_text: provincia,
+              //           enabled: widget.state == TypeState.read ? false : true,
+              //           decoration: TypeDecoration.focusBord,
+              //           onStringChanged: (String value) {
+              //             provincia = value;
+              //           },
+              //           listValidator: []
+              //       ),
+              //     ),
+              //       ],
+              // )
       ),
+      // Scrollbar(
+      //   child: SingleChildScrollView(
+      //       child: Form(
+      //         key: _formKey,
+      //         child: Padding(
+      //           padding: EdgeInsets.symmetric(horizontal: size_width_padding),
+      //           child: Column(
+      //             crossAxisAlignment: CrossAxisAlignment.start,
+      //             children: [
+      //               Row(
+      //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                 crossAxisAlignment: CrossAxisAlignment.end,
+      //                 children: [
+      //                   Padding(
+      //                     padding: const EdgeInsets.all(20.0),
+      //                     child: SizedBox(
+      //                       width: size_width,
+      //                       child: Text(
+      //                         'Mail',
+      //                         style: TextStyle(
+      //                             fontSize: size_text, fontWeight: FontWeight.bold),
+      //                       ),
+      //                     ),
+      //                   ),
+      //                   TextFieldCustom(
+      //                       text: mail,
+      //                       modify_text: mail,
+      //                       keyboardType: TextInputType.emailAddress,
+      //                       enabled: widget.state == TypeState.read ? false : true,
+      //                       decoration: TypeDecoration.focusBord,
+      //                       onStringChanged: (String value) {
+      //                         mail = value;
+      //                       },
+      //                       listValidator: [
+      //                         TypeValidator.required,
+      //                         TypeValidator.email
+      //                       ]
+      //                   ),
+      //                 ]
+      //               ),
+      //               Row(
+      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                   crossAxisAlignment: CrossAxisAlignment.end,
+      //                   children: [
+      //                     Padding(
+      //                       padding: const EdgeInsets.all(20.0),
+      //                       child: SizedBox(
+      //                         width: size_width,
+      //                         child: Text(
+      //                           'Nome',
+      //                           style: TextStyle(
+      //                               fontSize: size_text, fontWeight: FontWeight.bold),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     TextFieldCustom(
+      //                         text: nome,
+      //                         modify_text: nome,
+      //                         enabled: widget.state == TypeState.read ? false : true,
+      //                         decoration: TypeDecoration.focusBord,
+      //                         onStringChanged: (String value) {
+      //                           nome = value;
+      //                         },
+      //                         listValidator: []
+      //                     ),
+      //                   ]
+      //               ),
+      //               Row(
+      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                   crossAxisAlignment: CrossAxisAlignment.end,
+      //                   children: [
+      //                     Padding(
+      //                       padding: const EdgeInsets.all(20.0),
+      //                       child: SizedBox(
+      //                         width: size_width,
+      //                         child: Text(
+      //                           'Cognome',
+      //                           style: TextStyle(
+      //                               fontSize: size_text, fontWeight: FontWeight.bold),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     TextFieldCustom(
+      //                         text: cognome,
+      //                         modify_text: cognome,
+      //                         enabled: widget.state == TypeState.read ? false : true,
+      //                         decoration: TypeDecoration.focusBord,
+      //                         onStringChanged: (String value) {
+      //                           cognome = value;
+      //                         },
+      //                         listValidator: []
+      //                     ),
+      //                   ]
+      //               ),
+      //               Row(
+      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                   crossAxisAlignment: CrossAxisAlignment.end,
+      //                   children: [
+      //                     Padding(
+      //                       padding: const EdgeInsets.all(20.0),
+      //                       child: SizedBox(
+      //                         width: size_width,
+      //                         child: Text(
+      //                           'Codice Fiscale',
+      //                           style: TextStyle(
+      //                               fontSize: size_text, fontWeight: FontWeight.bold),
+      //                         ),
+      //                       ),
+      //                     ),
+      //                     TextFieldCustom(
+      //                         text: cf,
+      //                         modify_text: cf,
+      //                         enabled: widget.state == TypeState.read ? false : true,
+      //                         decoration: TypeDecoration.focusBord,
+      //                         onStringChanged: (String value) {
+      //                           cf = value;
+      //                         },
+      //                         listValidator: [
+      //                           //TypeValidator.cf,
+      //                         ]
+      //                     ),
+      //                   ]
+      //               ),
+      //             ],
+      //           ),
+      //         ),
+      //       )
+      //   ),
+      // ),
       floatingActionButton: action_button(context),
     );
   }
@@ -226,11 +435,21 @@ class _Det_UserViewState extends State<Det_UserView> {
         cf = '';
         nome = '';
         cognome = '';
+        profilo = SelectionProfile.paziente;
+        indirizzo = '';
+        citta = '';
+        cap = '';
+        provincia = '';
       } else {
         mail = widget.user!.mail;
         cf = widget.user!.cf;
         nome = widget.user!.nome;
         cognome = widget.user!.cognome;
+        profilo = widget.user!.profilo;
+        indirizzo = widget.user!.indirizzo;
+        citta = widget.user!.citta;
+        cap = widget.user!.cap.toString();
+        provincia = widget.user!.provincia;
       }
     });
   }
@@ -254,20 +473,29 @@ class _Det_UserViewState extends State<Det_UserView> {
 
   Future<void> insertElement() async {
     var master = Provider.of<Master>(context, listen: false);
+    bool insert = true;
 
     var result_data = master.array_user.where((e) => e.mail == mail);
     print('${result_data.length}');
     if (result_data.isNotEmpty){
+      insert == false;
       setState(() {
         master.gestion_Message('Utente già registrato!');
         return ;
       });
-    } else {
+    }
+    
+    if (insert == true){
       var user = Users(
           mail: mail,
           cf: cf,
           nome: nome,
-          cognome: cognome
+          cognome: cognome,
+        piva: piva,
+        indirizzo: indirizzo,
+        citta: citta,
+        cap: cap.changeStringToInt(),
+        provincia: provincia
       );
 
       try {
@@ -303,6 +531,11 @@ class _Det_UserViewState extends State<Det_UserView> {
     master.array_user[index].cf = cf;
     master.array_user[index].nome = nome;
     master.array_user[index].cognome = cognome;
+    master.array_user[index].piva = piva;
+    master.array_user[index].indirizzo = indirizzo;
+    master.array_user[index].citta = citta;
+    master.array_user[index].cap = cap.changeStringToInt();
+    master.array_user[index].provincia = provincia;
 
     try {
       var dirDB = FireStore().dirDB(document: '${Auth().currentUser!.uid}', value: 'User');
@@ -356,5 +589,17 @@ class _Det_UserViewState extends State<Det_UserView> {
     }
   }
 
+}
+
+extension WidgetDetUser on _Det_UserViewState {
+  Container TextCampo(String string) {
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: Text(string, style: TextStyle(fontWeight: FontWeight.bold),),
+      ),
+    );
+  }
 }
 

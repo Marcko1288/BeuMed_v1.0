@@ -16,6 +16,10 @@ class Users {
   late String   nome;
   late String   cognome;
   late SelectionProfile   profilo;
+  late String indirizzo;
+  late int cap;
+  late String citta;
+  late String provincia;
   late DateTime data_ins;
   late DateTime data_modify;
   //Costruttore
@@ -24,6 +28,10 @@ class Users {
     String? cf,
     String? piva,
     SelectionProfile? profilo,
+    String? indirizzo,
+    int? cap,
+    String? citta,
+    String? provincia,
     required this.mail,
     required this.nome,
     required this.cognome,
@@ -33,9 +41,13 @@ class Users {
         this.cf = cf ?? '',
         this.piva = piva ?? '',
         this.profilo = profilo ?? SelectionProfile.paziente,
+  this.indirizzo = indirizzo ?? '',
+  this.cap = cap ?? 00000,
+  this.citta = citta ?? '',
+  this.provincia = provincia ?? '',
+
         this.data_ins = data_ins ?? DateTime.now(),
         this.data_modify = data_modify ?? DateTime.now();
-
 
   //Default
   Users.standard({
@@ -58,6 +70,10 @@ class Users {
       piva: json['piva'].runtimeType == 'String' ? json['piva'].toString() : '',
       nome: json['nome'].runtimeType == 'String' ? json['nome'].toString() : '',
       cognome: json['cognome'].runtimeType == 'String' ? json['cognome'].toString() : '',
+      indirizzo: json['indirizzo'].runtimeType == 'String' ? json['indirizzo'].toString() : '',
+      cap: json['cap'].runtimeType == 'String' ? json['cap'].toString().changeStringToInt() : 00000,
+      citta: json['citta'].runtimeType == 'String' ? json['citta'].toString() : '',
+      provincia: json['provincia'].runtimeType == 'String' ? json['provincia'].toString() : '',
       profilo: json['profilo'].runtimeType == 'String' ? SelectionProfile.code(json['profilo'].toString()) : SelectionProfile.paziente,
       data_ins: json['data_ins'].runtimeType == 'String' ? json['data_ins'].toString().changeStringToDate() : DateTime.now(),
       data_modify: json['data_modify'].runtimeType == 'String' ? json['data_modify'].toString().changeStringToDate() : DateTime.now(),
@@ -72,13 +88,18 @@ class Users {
     'piva' : piva,
     'nome' : nome,
     'cognome' : cognome,
-    'data_ins' : data_ins,
+    'profilo' : profilo,
+    'indirizzo' : indirizzo,
+    'cap' : cap,
+    'citta' : citta,
+    'provincia' : provincia,
+        'data_ins' : data_ins,
     'data_modify' : data_modify
   };
 
   //Stampa Testata
   String printFirstLine() {
-    return 'UID;Mail;CF;PIVA;Nome;Cognome;Data Inserimento;Data Modifica';
+    return 'UID;Mail;CF;PIVA;Nome;Cognome;Profilo;Indirizzo;Cittá;CAP;Provincia;Data Inserimento;Data Modifica';
   }
 
   //Stampa Elementi
@@ -89,6 +110,11 @@ class Users {
         '${this.piva};'
         '${this.nome};'
         '${this.cognome};'
+        '${this.profilo};'
+        '${this.indirizzo};'
+        '${this.citta};'
+        '${this.cap};'
+        '${this.provincia};'
         '${this.data_ins.changeDateToString()};'
         '${this.data_modify.changeDateToString()};';
   }
